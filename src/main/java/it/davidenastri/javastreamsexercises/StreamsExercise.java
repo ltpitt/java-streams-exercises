@@ -1,9 +1,12 @@
-package com.example.streams;
+package it.davidenastri.javastreamsexercises;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.Arrays;
+import java.util.IntSummaryStatistics;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -20,7 +23,7 @@ public class StreamsExercise {
         IntStream
                 .range(1, 10)
                 .skip(5)
-                .forEach(x -> System.out.println(x));
+                .forEach(System.out::println);
 
         System.out.println("\n\nInteger Stream with sum:");
         System.out.println(
@@ -57,7 +60,7 @@ public class StreamsExercise {
                 .forEach(System.out::println);
 
         System.out.println("\n\nStream rows from text file, sort, filter and print:");
-        Stream<String> bands = Files.lines(Paths.get("bands.txt"));
+        Stream<String> bands = Files.lines(Paths.get("src/main/java/it/davidenastri/javastreamsexercises/bands.txt"));
         bands
                 .sorted()
                 .filter(x -> x.length() > 11)
@@ -65,13 +68,13 @@ public class StreamsExercise {
         bands.close(); // Good people use .close() in order to prevent memory leaks
 
         System.out.println("\n\nStream rows from text file and save to List:");
-        List<String> bands2 = Files.lines(Paths.get("bands.txt"))
+        List<String> bands2 = Files.lines(Paths.get("src/main/java/it/davidenastri/javastreamsexercises/bands.txt"))
                 .filter(x -> x.contains("The"))
                 .collect(Collectors.toList());
-        bands2.forEach(x -> System.out.println(x));
+        bands2.forEach(System.out::println);
 
         System.out.println("\n\nStream rows from CSV file and count rows containing 3 items:");
-        Stream<String> rows = Files.lines(Paths.get("data.txt"));
+        Stream<String> rows = Files.lines(Paths.get("src/main/java/it/davidenastri/javastreamsexercises/data.txt"));
         int rowCount = (int) rows
                 .map(x -> x.split(","))
                 .filter(x -> x.length == 3)
@@ -80,7 +83,7 @@ public class StreamsExercise {
         System.out.println(rowCount + " rows");
 
         System.out.println("\n\nStream rows from CSV file, parse data from rows:");
-        Stream<String> rows2 = Files.lines(Paths.get("data.txt"));
+        Stream<String> rows2 = Files.lines(Paths.get("src/main/java/it/davidenastri/javastreamsexercises/data.txt"));
         rows2
                 .map(x -> x.split(","))
                 .filter(x -> x.length == 3)
@@ -89,8 +92,8 @@ public class StreamsExercise {
         rows2.close();
 
         System.out.println("\n\nStream rows from CSV file, store fields in HashMap:");
-        Stream<String> rows3 = Files.lines(Paths.get("data.txt"));
-        Map<String, Integer> map = new HashMap<>();
+        Stream<String> rows3 = Files.lines(Paths.get("src/main/java/it/davidenastri/javastreamsexercises/data.txt"));
+        Map<String, Integer> map;
         map = rows3
                 .map(x -> x.split(","))
                 .filter(x -> x.length == 3)
@@ -109,7 +112,8 @@ public class StreamsExercise {
         // 0.0 is the starting value, a will be the running total and
         // b will be the new item to be added
         double total = Stream.of(7.3, 1.5, 4.8)
-                .reduce(0.0, (Double a, Double b) -> a + b);
+                .reduce(0.0, Double::sum);
+        // .reduce(0.0, (Double a, Double b) -> a + b);
         System.out.println("Total = " + total);
 
         System.out.println("\n\nReduction - summary statistics:");
